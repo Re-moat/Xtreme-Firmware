@@ -168,7 +168,7 @@ static void esp8266_deauth_module_render_callback(Canvas* const canvas, void* ct
             canvas_clear(canvas);
             canvas_set_font(canvas, FontSecondary);
 
-            const char* strInitializing = "Attach WiFi Deauther module";
+            const char* strInitializing = "Att4ch m0dule";
             canvas_draw_str(
                 canvas,
                 (128 / 2) - (canvas_string_width(canvas, strInitializing) / 2),
@@ -184,7 +184,7 @@ static void esp8266_deauth_module_render_callback(Canvas* const canvas, void* ct
         if(!app->m_wifiDeauthModuleInitialized) {
             canvas_set_font(canvas, FontPrimary);
 
-            const char* strInitializing = "Initializing...";
+            const char* strInitializing = "Initializing.!.";
             canvas_draw_str(
                 canvas,
                 (128 / 2) - (canvas_string_width(canvas, strInitializing) / 2),

@@ -60,7 +60,7 @@ static DialogMessageButton compliance_screen(DialogsApp* dialogs, DialogMessage*
 
     const char* screen_text = "For all compliance\n"
                               "certificates please visit:\n"
-                              "www.flipp.dev/compliance";
+                              "www.pornhub.com/compliance";
 
     dialog_message_set_text(message, screen_text, 0, 0, AlignLeft, AlignTop);
     result = dialog_message_show(dialogs, message);
