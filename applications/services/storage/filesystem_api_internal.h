@@ -100,11 +100,12 @@ typedef struct {
     uint16_t (*write)(void* context, File* file, const void* buff, uint16_t bytes_to_write);
     bool (*const seek)(void* context, File* file, uint32_t offset, bool from_start);
     uint64_t (*tell)(void* context, File* file);
-    bool (*const expand)(void* context, File* file, uint64_t size);
     bool (*const truncate)(void* context, File* file);
     uint64_t (*size)(void* context, File* file);
     bool (*const sync)(void* context, File* file);
     bool (*const eof)(void* context, File* file);
+
+    bool (*const expand)(void* context, File* file, uint64_t size);
 } FS_File_Api;
 
 /** Dir api structure
@@ -176,13 +177,14 @@ typedef struct {
 typedef struct {
     FS_Error (*const stat)(void* context, const char* path, FileInfo* fileinfo);
     FS_Error (*const remove)(void* context, const char* path);
-    FS_Error (*const rename)(void* context, const char* old, const char* new);
     FS_Error (*const mkdir)(void* context, const char* path);
     FS_Error (*const fs_info)(
         void* context,
         const char* fs_path,
         uint64_t* total_space,
         uint64_t* free_space);
+
+    FS_Error (*const rename)(void* context, const char* old, const char* new);
 } FS_Common_Api;
 
 /** Full filesystem api structure */

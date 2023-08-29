@@ -77,7 +77,7 @@ void mass_storage_scene_create_image_on_enter(void* context) {
     variable_item_list_set_enter_callback(
         var_item_list, mass_storage_scene_create_image_var_item_list_callback, app);
 
-    variable_item_list_set_header(var_item_list, "Create Disc Image");
+    variable_item_list_set_header(var_item_list, "Create Disk Image");
 
     variable_item_list_set_selected_item(
         var_item_list,
@@ -125,19 +125,34 @@ bool mass_storage_scene_create_image_on_event(void* context, SceneManagerEvent e
 
             app->file = storage_file_alloc(app->fs_api);
             const char* error = NULL;
-            if(storage_file_open(
-                   app->file, furi_string_get_cstr(app->file_path), FSAM_WRITE, FSOM_CREATE_NEW)) {
+            bool success = false;
+
+            size_t wipe_4k = 4096;
+            uint8_t* buffer = malloc(wipe_4k);
+            do {
+                if(!storage_file_open(
+                       app->file,
+                       furi_string_get_cstr(app->file_path),
+                       FSAM_WRITE,
+                       FSOM_CREATE_NEW))
+                    break;
+
                 uint64_t size = image_sizes[app->create_image_size].value;
-                if(size == app->create_image_max) {
-                    size--;
-                }
-                if(!storage_file_expand(app->file, size)) {
-                    error = storage_file_get_error_desc(app->file);
-                    storage_file_close(app->file);
-                    storage_common_remove(app->fs_api, furi_string_get_cstr(app->file_path));
-                }
-            } else {
+                if(size == app->create_image_max) size--;
+                if(!storage_file_expand(app->file, size)) break;
+
+                // Zero out first 4k - partition table and adjacent data
+                if(!storage_file_seek(app->file, 0, true)) break;
+                if(!storage_file_write(app->file, buffer, wipe_4k)) break;
+
+                success = true;
+            } while(false);
+            free(buffer);
+
+            if(!success) {
                 error = storage_file_get_error_desc(app->file);
+                storage_file_close(app->file);
+                storage_common_remove(app->fs_api, furi_string_get_cstr(app->file_path));
             }
             storage_file_free(app->file);
             mass_storage_app_show_loading_popup(app, false);

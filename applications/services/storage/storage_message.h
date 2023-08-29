@@ -136,7 +136,6 @@ typedef enum {
     StorageCommandFileWrite,
     StorageCommandFileSeek,
     StorageCommandFileTell,
-    StorageCommandFileExpand,
     StorageCommandFileTruncate,
     StorageCommandFileSize,
     StorageCommandFileSync,
@@ -148,7 +147,6 @@ typedef enum {
     StorageCommandCommonTimestamp,
     StorageCommandCommonStat,
     StorageCommandCommonRemove,
-    StorageCommandCommonRename,
     StorageCommandCommonMkDir,
     StorageCommandCommonFSInfo,
     StorageCommandSDFormat,
@@ -156,6 +154,9 @@ typedef enum {
     StorageCommandSDInfo,
     StorageCommandSDStatus,
     StorageCommandCommonResolvePath,
+
+    StorageCommandFileExpand,
+    StorageCommandCommonRename,
 } StorageCommand;
 
 typedef struct {
